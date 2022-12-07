@@ -1,10 +1,31 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { DYNAMO_DB_CONNECTION } from '../dynamo.module';
-import { Document } from '../entities/document.entity';
+import { Injectable } from '@nestjs/common';
+import { Document, DocumentDoc } from '../entities/document.entity';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class DocumentsService {
-  constructor(@Inject(DYNAMO_DB_CONNECTION) private dynamoClient) {}
+  constructor(
+    @InjectModel(Document.name) private docModel: Model<DocumentDoc>,
+  ) {}
 
-  async addOne(data): Promise<Document> {}
+  async createOne(
+    data: Pick<Document, 'title' | 'personId'>,
+  ): Promise<Document> {
+    const doc = new this.docModel({
+      ...data,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    return doc.save();
+  }
+
+  async findManyByPersonId(
+    data: Pick<Document, 'personId'>,
+  ): Promise<Document[]> {
+    return this.docModel.find({
+      personId: data.personId,
+    });
+  }
 }
