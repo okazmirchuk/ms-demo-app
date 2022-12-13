@@ -11,6 +11,9 @@ export class Event {
   @Prop()
   personId: string;
 
+  @Prop()
+  language: string;
+
   @Prop({ type: Date, required: true })
   createdAt: Date;
 

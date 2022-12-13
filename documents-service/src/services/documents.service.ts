@@ -14,7 +14,6 @@ export class DocumentsService {
   ): Promise<Document> {
     const doc = new this.docModel({
       ...data,
-      title: this.wrapTitle({ title: data.title, language: data.language }),
       createdAt: new Date(),
       updatedAt: new Date(),
     });
@@ -28,17 +27,5 @@ export class DocumentsService {
     return this.docModel.find({
       personId: data.personId,
     });
-  }
-
-  private wrapTitle({
-    title,
-    language,
-  }: Pick<Document, 'title'> & { language: string }) {
-    switch (language) {
-      case 'en':
-        return `<english>${title}</english>`;
-      case 'de':
-        return `<german>${title}</german>`;
-    }
   }
 }

@@ -18,4 +18,12 @@ export class CreateEventDto {
     example: v4(),
   })
   readonly personId: string;
+
+  @IsNotEmpty()
+  @ApiProperty({
+    required: true,
+    type: 'string',
+    example: 'en',
+  })
+  readonly language: string;
 }

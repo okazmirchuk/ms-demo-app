@@ -9,7 +9,7 @@ export class EventsService {
   async sendEventToDocumentsMs<T>(event: EventsEnum, data: T): Promise<void> {
     await this.httpService.axiosRef.post('http://127.0.0.1:3700/events', {
       type: event,
-      data,
+      ...data,
     });
   }
 }

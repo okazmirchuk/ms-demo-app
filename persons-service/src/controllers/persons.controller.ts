@@ -26,10 +26,10 @@ export class PersonsController {
   async createOne(@Body() body: CreatePersonDto): Promise<Person> {
     const person = await this.personsService.createOne(body);
 
-    this.eventsService.sendEventToDocumentsMs<Person>(
-      EventsEnum.PERSON_CREATED,
-      person,
-    );
+    this.eventsService.sendEventToDocumentsMs(EventsEnum.PERSON_CREATED, {
+      personId: person.id,
+      language: person.language,
+    });
 
     return person;
   }
